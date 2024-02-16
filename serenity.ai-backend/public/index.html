@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gauge Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/gauge-chart"></script>
+</head>
+
+<body>
+    <canvas id="gaugeChart" width="400" height="400"></canvas>
+    <script>
+        fetch('http://localhost:3000/data')
+            .then(response => response.json())
+            .then(data => {
+                // Element inside which you want to see the chart
+                let element = document.querySelector('#gaugeArea')
+
+                // Properties of the gauge
+                let gaugeOptions = {
+                    hasNeedle: true,
+                    needleColor: 'gray',
+                    needleUpdateSpeed: 1000,
+                    arcColors: ['rgb(44, 151, 222)', 'lightgray'],
+                    arcDelimiters: [30],
+                    rangeLabel: ['0', '100'],
+                    centralLabel: '50',
+                }
+
+                // Drawing and updating the chart
+                GaugeChart.gaugeChart(element, 300, gaugeOptions).updateNeedle(50)
+            })
+
+    </script>
+</body>
+
+</html>
