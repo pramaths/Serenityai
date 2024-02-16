@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const { v4: uuidv4 } = require('uuid');
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 app.use(express.json());
 
 // Dummy database for storing user data
@@ -135,10 +135,17 @@ app.post('/api/data', (req, res) => {
     const userId = uuidv4(); // Generate unique identifier
 
     const scores = DASS21(requestData);
-    const severity = getSeverity(scores[depressionScore], scores[anxietyScore], scores[stressScore]);
+    const severity = getSeverity(scores.depressionScore, scores.anxietyScore, scores.stressScore);
 
     // Store user data in the database
-    userData[userId] = { depressionScore: scores[depressionScore], anxietyScore: scores[anxietyScore], stressScore: scores[stressScore], depressionSeverity: severity[Depression], anxietySeverity: severity[Anxiety], stressSeverity: severity[Stress] };
+    userData[userId] = { 
+        depressionScore: scores.depressionScore, 
+        anxietyScore: scores.anxietyScore, 
+        stressScore: scores.stressScore, 
+        depressionSeverity: severity.Depression, 
+        anxietySeverity: severity.Anxiety, 
+        stressSeverity: severity.Stress 
+    };
 
     // Send frontend link with userId as query parameter
     const frontendLink = `http://localhost:3000/dashboard?userId=${userId}`;
