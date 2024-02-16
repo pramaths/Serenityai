@@ -1,144 +1,152 @@
 const express = require('express');
 const app = express();
+const { v4: uuidv4 } = require('uuid');
 const PORT = process.env.PORT || 3000;
+app.use(express.json());
 
-const Chart = require('chart.js');
-const path = require('path');
+// Dummy database for storing user data
+const userData = {};
 
 // Sample scores for depression, anxiety, and stress
-const depressionScore = 8;
-const anxietyScore = 6;
-const stressScore = 11;
-
-// Calculate severity
-const severity = calculateSeverity(depressionScore, anxietyScore, stressScore);
+// const depressionScore = 8;
+// const anxietyScore = 6;
+// const stressScore = 11;
 
 // Function to calculate severity based on scores
-function calculateSeverity(depressionScore, anxietyScore, stressScore) {
-    if (depressionScore >= 14 || anxietyScore >= 10 || stressScore >= 17) {
-        return "Extremely Severe";
-    } else if (depressionScore >= 11 || anxietyScore >= 8 || stressScore >= 13) {
-        return "Severe";
-    } else if (depressionScore >= 7 || anxietyScore >= 6 || stressScore >= 10) {
-        return "Moderate";
-    } else if (depressionScore >= 5 || anxietyScore >= 4 || stressScore >= 8) {
-        return "Mild";
+function getSeverity(depression, anxiety, stress) {
+    const severity = {
+        Depression: '',
+        Anxiety: '',
+        Stress: ''
+    };
+
+    // Determine severity for depression
+    if (depression >= 14) {
+        severity.Depression = 'Extremely Severe';
+    } else if (depression >= 11) {
+        severity.Depression = 'Severe';
+    } else if (depression >= 7) {
+        severity.Depression = 'Moderate';
+    } else if (depression >= 5) {
+        severity.Depression = 'Mild';
     } else {
-        return "Normal";
+        severity.Depression = 'Normal';
     }
+
+    // Determine severity for anxiety
+    if (anxiety >= 10) {
+        severity.Anxiety = 'Extremely Severe';
+    } else if (anxiety >= 8) {
+        severity.Anxiety = 'Severe';
+    } else if (anxiety >= 6) {
+        severity.Anxiety = 'Moderate';
+    } else if (anxiety >= 4) {
+        severity.Anxiety = 'Mild';
+    } else {
+        severity.Anxiety = 'Normal';
+    }
+
+    // Determine severity for stress
+    if (stress >= 17) {
+        severity.Stress = 'Extremely Severe';
+    } else if (stress >= 13) {
+        severity.Stress = 'Severe';
+    } else if (stress >= 10) {
+        severity.Stress = 'Moderate';
+    } else if (stress >= 8) {
+        severity.Stress = 'Mild';
+    } else {
+        severity.Stress = 'Normal';
+    }
+
+    return severity;
 }
 
-// Serve static files from the public directory
-app.use(express.static(path.join(__dirname, 'public')));
+function DASS21(obj) {
+    var depressionScore = 0;
+    var anxietyScore = 0;
+    var stressScore = 0;
 
-// Route to render the chart
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/index.html'));
-});
+    for (let key in obj) {
+        switch (parseInt(key)) { // Parse key to integer
+            case 1:
+            case 6:
+            case 8:
+            case 11:
+            case 12:
+            case 14:
+            case 18:
+                stressScore += obj[key];
+                break;
+            case 2:
+            case 4:
+            case 7:
+            case 9:
+            case 15:
+            case 19:
+            case 20:
+                anxietyScore += obj[key];
+                break;
+            case 3:
+            case 5:
+            case 10:
+            case 13:
+            case 16:
+            case 17:
+            case 21:
+                depressionScore += obj[key];
+                break;
+            default:
+                console.log("Value is not between 1 and 21");
+        }
+    }
 
-// Route to get severity and scores
-app.get('/data', (req, res) => {
-    res.json({
-        severity: severity,
+    return {
         depressionScore: depressionScore,
         anxietyScore: anxietyScore,
         stressScore: stressScore
-    });
+    };
+}
+
+// Route to send severity and scores to frontend Dashboard
+app.get('/dassReport/:userId', (req, res) => {
+    const userId = req.params.userId;
+
+    // Check if userData exists for the given userId
+    if (userData[userId]) {
+        const { depressionScore, anxietyScore, stressScore, depressionSeverity , anxietySeverity, stressSeverity } = userData[userId];
+        res.json({
+            depressionSeverity: depressionSeverity,
+            anxietySeveritySeverity: anxietySeverity,
+            stressSeverity: stressSeverity,
+            depressionScore: depressionScore,
+            anxietyScore: anxietyScore,
+            stressScore: stressScore
+        });
+    } else {
+        res.status(404).json({ error: 'User data not found' });
+    }
 });
 
-// function DASS21(obj){
-//     var depressionScore = 0;
-//     var anxietyScore = 0;
-//     var stressScore = 0;
-
-//     for (let key in obj) {
-//         // console.log(key + ': ' + myObject[key]);
-//         switch (key) {
-//             case 1:
-//                 stressScore += obj[key];
-//                 break;
-//             case 2:
-//                 anxietyScore += obj[key];
-//                 break;
-//             case 3:
-//                 depressionScore += obj[key];
-//                 break;
-//             case 4:
-//                 anxietyScore += obj[key];
-//                 break;
-//             case 5:
-//                  depressionScore += obj[key];
-//                 break;
-//             case 6:
-//                 stressScore += obj[key];
-//                 break;
-//             case 7:
-//                 anxietyScore += obj[key];
-//                 break;
-//             case 8:
-//                 stressScore += obj[key];
-//                 break;
-//             case 9:
-//                 anxietyScore += obj[key];
-//                 break;
-//             case 10:
-//                 depressionScore += obj[key];
-//                 break;
-//             case 11:
-//                 stressScore += obj[key];
-//                 break;
-//             case 12:
-//                 stressScore += obj[key];
-//                 break;
-//             case 13:
-//                 depressionScore += obj[key];
-//                 break;
-//             case 14:
-//                 stressScore += obj[key];
-//                 break;
-//             case 15:
-//                 anxietyScore += obj[key];
-//                 break;
-//             case 16:
-//                 depressionScore += obj[key];
-//                 break;
-//             case 17:
-//                 depressionScore += obj[key];
-//                 break;
-//             case 18:
-//                 stressScore += obj[key];
-//                 break;
-//             case 19:
-//                 anxietyScore += obj[key];
-//                 break;
-//             case 20:
-//                 anxietyScore += obj[key];
-//                 break;
-//             case 21:
-//                 depressionScore += obj[key];
-//                 break;
-//             default:
-//                 console.log("Value is not between 1 and 21");
-//         }
-        
-//       }
-    
-// }
-
-app.use(express.json());
-
-// API endpoint to handle POST requests
+// API endpoint to handle POST requests from bot
 app.post('/api/data', (req, res) => {
-  // Assuming the request body contains the object with 42 variables
-  const requestData = req.body;
+    // Assuming the request body contains the object with 42 variables
+    const requestData = req.body;
+    const userId = uuidv4(); // Generate unique identifier
 
-  // Here you can manipulate or process the requestData as needed
-  // For demonstration purposes, we'll simply send back the received data
+    const scores = DASS21(requestData);
+    const severity = getSeverity(scores[depressionScore], scores[anxietyScore], scores[stressScore]);
 
-  res.json({ receivedData: requestData });
+    // Store user data in the database
+    userData[userId] = { depressionScore: scores[depressionScore], anxietyScore: scores[anxietyScore], stressScore: scores[stressScore], depressionSeverity: severity[Depression], anxietySeverity: severity[Anxiety], stressSeverity: severity[Stress] };
+
+    // Send frontend link with userId as query parameter
+    const frontendLink = `http://localhost:3000/dashboard?userId=${userId}`;
+    res.json({ link: frontendLink });
+
 });
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
