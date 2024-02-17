@@ -1,6 +1,6 @@
 'use client'
 import GaugeChart from '../../components/gaugechart';
-import styles from '../../styles/Home.module.css';
+import styles from '../../styles/Dashboard.module.css';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import axios from 'axios'
@@ -65,14 +65,17 @@ const dashboard = () => {
               <div className={styles.compartment}>
                 <GaugeChart value={dassReport.depressionScore} />
                 <h2>Depression Score</h2>
+                <h3>Severity : {dassReport.depressionSeverity}</h3>
               </div>
               <div className={styles.compartment}>
                 <GaugeChart value={dassReport.anxietyScore} />
                 <h2>Anxiety Score</h2>
+                <h3>Severity : {dassReport.anxietySeverity}</h3>
               </div>
               <div className={styles.compartment}>
                 <GaugeChart value={dassReport.stressScore} />
                 <h2>Stress Score</h2>
+                <h3>Severity : {dassReport.stressSeverity}</h3>
               </div>
 
             </div>
