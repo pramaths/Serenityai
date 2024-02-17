@@ -124,7 +124,7 @@ app.get('/dassReport/:userId', (req, res) => {
         console.log("userdata",userData[userId])
         res.json({
             depressionSeverity: depressionSeverity,
-            anxietySeveritySeverity: anxietySeverity,
+            anxietySeverity: anxietySeverity,
             stressSeverity: stressSeverity,
             depressionScore: depressionScore,
             anxietyScore: anxietyScore,
