@@ -120,7 +120,7 @@ app.get('https://serenityai-42c1-fdgawl6mh-pramaths.vercel.app/dassReport/:userI
         console.log("userdata",userData[userId])
         res.json({
             depressionSeverity: depressionSeverity,
-            anxietySeveritySeverity: anxietySeverity,
+            anxietySeverity: anxietySeverity,
             stressSeverity: stressSeverity,
             depressionScore: depressionScore,
             anxietyScore: anxietyScore,
