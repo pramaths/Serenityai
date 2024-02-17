@@ -117,6 +117,7 @@ app.get('/dassReport/:userId', (req, res) => {
     // Check if userData exists for the given userId
     if (userData[userId]) {
         const { depressionScore, anxietyScore, stressScore, depressionSeverity , anxietySeverity, stressSeverity } = userData[userId];
+        console.log("userdata",userData[userId])
         res.json({
             depressionSeverity: depressionSeverity,
             anxietySeveritySeverity: anxietySeverity,
