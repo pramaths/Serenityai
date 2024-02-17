@@ -17,7 +17,7 @@ const dashboard = () => {
       console.log(userId);
       const fetchData = async () => {
         try {
-          const response = await axios.get(`http://localhost:8000/dassReport/${userId}`);
+          const response = await axios.get(`https://serenityaii.onrender.com/dassReport/${userId}`);
           setDassReport(response.data);
           console.log(response.data);
         } catch (error) {

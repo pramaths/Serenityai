@@ -111,7 +111,7 @@ function DASS21(obj) {
 }
 
 // Route to send severity and scores to frontend Dashboard
-app.get('/dassReport/:userId', (req, res) => {
+app.get('https://serenityai-42c1-fdgawl6mh-pramaths.vercel.app/dassReport/:userId', (req, res) => {
     const userId = req.params.userId;
 
     // Check if userData exists for the given userId
@@ -132,7 +132,7 @@ app.get('/dassReport/:userId', (req, res) => {
 });
 
 // API endpoint to handle POST requests from bot
-app.post('/api/data', (req, res) => {
+app.post('https://serenityaii.onrender.com/api/data', (req, res) => {
     // Assuming the request body contains the object with 42 variables
     const requestData = req.body;
     console.log("user response",req.body)
@@ -152,7 +152,7 @@ app.post('/api/data', (req, res) => {
     };
 
     // Send frontend link with userId as query parameter
-    const frontendLink = `http://localhost:3000/dashboard/${userId}`;
+    const frontendLink = `https://serenityai-42c1-fdgawl6mh-pramaths.vercel.app/dashboard/${userId}`;
     res.json({ link: frontendLink });
 
 });
