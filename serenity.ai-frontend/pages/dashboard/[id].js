@@ -1,6 +1,7 @@
 'use client'
 import GaugeChart from '../../components/gaugechart';
 import styles from '../../styles/Dashboard.module.css';
+import VideoRecommendations from '../../components/videoRecommendation';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import axios from 'axios'
@@ -23,10 +24,10 @@ const dashboard = () => {
           console.log('Error fetching data:', error);
         }
       };
-  
+
       fetchData();
     }
-    
+
 
     // Clean-up function if needed
     return () => {
@@ -60,25 +61,31 @@ const dashboard = () => {
 
         {
           dassReport && (
-            <div className={styles.report}>
-              {/* <h1>Gauge Chart Example</h1> */}
-              <div className={styles.compartment}>
-                <GaugeChart value={dassReport.depressionScore} />
-                <h2>Depression Score</h2>
-                <h3>Severity : {dassReport.depressionSeverity}</h3>
+            <>
+              <div className={styles.report}>
+                {/* <h1>Gauge Chart Example</h1> */}
+                <div className={styles.compartment}>
+                  <GaugeChart value={dassReport.depressionScore} />
+                  <h2>Depression Score</h2>
+                  <h3>Severity : {dassReport.depressionSeverity}</h3>
+                </div>
+                <div className={styles.compartment}>
+                  <GaugeChart value={dassReport.anxietyScore} />
+                  <h2>Anxiety Score</h2>
+                  <h3>Severity : {dassReport.anxietySeverity}</h3>
+                </div>
+                <div className={styles.compartment}>
+                  <GaugeChart value={dassReport.stressScore} />
+                  <h2>Stress Score</h2>
+                  <h3>Severity : {dassReport.stressSeverity}</h3>
+                </div>
+
               </div>
-              <div className={styles.compartment}>
-                <GaugeChart value={dassReport.anxietyScore} />
-                <h2>Anxiety Score</h2>
-                <h3>Severity : {dassReport.anxietySeverity}</h3>
-              </div>
-              <div className={styles.compartment}>
-                <GaugeChart value={dassReport.stressScore} />
-                <h2>Stress Score</h2>
-                <h3>Severity : {dassReport.stressSeverity}</h3>
+              <div className={styles.video}>
+                <VideoRecommendations />
               </div>
 
-            </div>
+            </>
           )
         }
       </main>

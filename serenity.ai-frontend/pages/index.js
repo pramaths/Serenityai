@@ -27,7 +27,7 @@ export default function Home() {
             <span className={styles.gradient}>Serenity.ai</span>
           </h1>
           <p className={styles.subtitle}>
-            Transforming Health Conversations: Chat, Assess, and Discover with Serenity.ai
+            Transforming Health Conversations: Chat and Discover with Serenity.ai
           </p>
         </div>
         <div className={styles.hero}>
