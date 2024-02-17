@@ -1,8 +1,13 @@
 const express = require('express');
-const app = express();
+const morgan = require('morgan');
 const { v4: uuidv4 } = require('uuid');
 const cors = require('cors');
+const app = express();
+
 const PORT = process.env.PORT || 8000;
+const morgan = require('morgan');
+
+app.use(morgan('dev'));
 app.use(express.json());
 app.use(cors());
 
@@ -111,7 +116,7 @@ function DASS21(obj) {
 }
 
 // Route to send severity and scores to frontend Dashboard
-app.get('https://serenityai-42c1-fdgawl6mh-pramaths.vercel.app/dassReport/:userId', (req, res) => {
+app.get('/dassReport/:userId', (req, res) => {
     const userId = req.params.userId;
 
     // Check if userData exists for the given userId
@@ -132,7 +137,7 @@ app.get('https://serenityai-42c1-fdgawl6mh-pramaths.vercel.app/dassReport/:userI
 });
 
 // API endpoint to handle POST requests from bot
-app.post('https://serenityaii.onrender.com/api/data', (req, res) => {
+app.post('/api/data', (req, res) => {
     // Assuming the request body contains the object with 42 variables
     const requestData = req.body;
     console.log("user response",req.body)
