@@ -46,7 +46,7 @@ const Login = () => {
             <div className={styles.container}>
                 <div className={styles.box}>
                     <div className={styles.header}>
-                        <h2>login</h2>
+                        <h2>login here</h2>
                         <h5>Who are you ?</h5>
                     </div>
                     <span className={styles.fillart1}>
@@ -79,7 +79,7 @@ const Login = () => {
                                     <label>Password:</label>
                                     <input type="password" value={password} onChange={handlePasswordChange} />
                                 </div>
-                                <button type="submit" className={styles.submit}>Login</button>
+                                <button type="submit" className={styles.submit}>login</button>
                             </form>
                         </div>
                     )}
