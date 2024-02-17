@@ -134,6 +134,7 @@ app.get('/dassReport/:userId', (req, res) => {
 app.post('/api/data', (req, res) => {
     // Assuming the request body contains the object with 42 variables
     const requestData = req.body;
+    console.log("user response",req.body)
     const userId = uuidv4(); // Generate unique identifier
 
     const scores = DASS21(requestData);
@@ -150,7 +151,7 @@ app.post('/api/data', (req, res) => {
     };
 
     // Send frontend link with userId as query parameter
-    const frontendLink = `http://localhost:3000/dashboard?userId=${userId}`;
+    const frontendLink = `http://localhost:3000/dashboard/${userId}`;
     res.json({ link: frontendLink });
 
 });
