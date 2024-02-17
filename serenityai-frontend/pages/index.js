@@ -1,88 +1,92 @@
-import Head from 'next/head';
-import styles from "../styles/Home.module.css"
-import Lottie from 'react-lottie';
-import anim from './anime.json';
-import Chatbot from '../components/bot';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import styles from '../styles/Login.module.css'; // Import the CSS module
+import { FaHeartbeat } from "react-icons/fa";
+import { GiHealthNormal } from "react-icons/gi";
+import { RiMentalHealthFill } from "react-icons/ri";
 
-export default function Home() {
+const Login = () => {
+    const [role, setRole] = useState('');
+    const [doctorId, setDoctorId] = useState('');
+    const [password, setPassword] = useState('');
+    const router = useRouter();
 
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: anim,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice"
-    }
-  };
+    const handleRoleSelect = (selectedRole) => {
+        setRole(selectedRole);
+    };
 
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Serenity.ai</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main>
-        <div className={styles.headerC}>
-          <h1>
-            <span className={styles.gradient}>Serenity.ai</span>
-          </h1>
-          <p className={styles.subtitle}>
-            Transforming Health Conversations: Chat and Discover with Serenity.ai
-          </p>
-        </div>
-        <div className={styles.hero}>
-          <div className={styles.animation_logo}>
-            <Lottie
-              options={defaultOptions}
-              height={550}
-              width={450}
-            />
-          </div>
-          <div className={styles.botArea}>
-            <Chatbot />
-          </div>
-        </div>
-        <div className={styles.footer}>
-          Disclaimer: Serenity.ai serves as a curator and summarizer, not the owner or responsible party for any answered data
-        </div>
-      </main>
+    const handleDoctorIdChange = (e) => {
+        setDoctorId(e.target.value);
+    };
 
-      <style jsx>{`
-        // main {
-        //   padding: 5rem 0;
-        //   flex: 1;
-        //   display: flex;
-        //   flex-direction: column;
-        //   justify-content: center;
-        //   align-items: center;
-        // }
-      `}</style>
+    const handlePasswordChange = (e) => {
+        setPassword(e.target.value);
+    };
 
-      <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family:
-            -apple-system,
-            BlinkMacSystemFont,
-            Segoe UI,
-            Roboto,
-            Oxygen,
-            Ubuntu,
-            Cantarell,
-            Fira Sans,
-            Droid Sans,
-            Helvetica Neue,
-            sans-serif;
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (role === 'user') {
+            // Redirect to user home page
+            router.push('/user');
+        } else if (role === 'doctor' && doctorId === 'doc123' && password === '12543') {
+            // Redirect to doctor home page
+            router.push('/doctor');
+        } else {
+            alert('Invalid credentials');
         }
-        * {
-          box-sizing: border-box;
-          margin:0;
-          padding:0;
-        }
-      `}</style>
-    </div>
-  )
+    };
 
-}
+    return (
+        <div className={styles.page}>
+            <div className={styles.hero}>
+                <h1>
+                    Welcome to  <span className={styles.gradient}>   Serenity.ai</span> 👋
+                </h1>
+            </div>
+            <div className={styles.container}>
+                <div className={styles.box}>
+                    <div className={styles.header}>
+                        <h2>login here</h2>
+                        <h5>Who are you ?</h5>
+                    </div>
+                    <span className={styles.fillart1}>
+                        <FaHeartbeat />
+                    </span>
+                    <span className={styles.fillart2}>
+                        <FaHeartbeat />
+                    </span>
+                    <span className={styles.fillart3}>
+                        <FaHeartbeat />
+                    </span>
+                    <span className={styles.fillplus1}>
+                    <GiHealthNormal />
+                    </span>
+                    <span className={styles.fillmind1}>
+                    <RiMentalHealthFill />
+                    </span>
+                    <div className={styles.buttons}>
+                        <button onClick={() => {handleRoleSelect('user');router.push('/user')}}>User</button>
+                        <button onClick={() => handleRoleSelect('doctor')}>Doctor</button>
+                    </div>
+                    {role === 'doctor' && (
+                        <div className={styles.credentials}>
+                            <form onSubmit={handleSubmit}>
+                                <div className={styles.group}>
+                                    <label>Doctor ID:</label>
+                                    <input type="text" value={doctorId} onChange={handleDoctorIdChange} />
+                                </div>
+                                <div className={styles.group}>
+                                    <label>Password:</label>
+                                    <input type="password" value={password} onChange={handlePasswordChange} />
+                                </div>
+                                <button type="submit" className={styles.submit}>login</button>
+                            </form>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Login;

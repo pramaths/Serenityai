@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-const Chatbot = () => {
+const Chatbot1 = () => {
     useEffect(() => {
         const script = document.createElement('script')
         script.src = 'https://cdn.botpress.cloud/webchat/v1/inject.js'
@@ -28,11 +28,10 @@ const Chatbot = () => {
                 "themeColor": "#2563eb"
             });
 
-
         }
     }, [])
 
     return <div id="webchat" />
 }
 
-export default Chatbot
+export default Chatbot1

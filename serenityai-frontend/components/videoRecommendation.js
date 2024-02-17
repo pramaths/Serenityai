@@ -37,12 +37,11 @@ const VideoRecommendations = () => {
 
   return (
     <div>
-      <h2>Recommended Videos</h2>
+      <h2>May be these would help</h2>
       <div className="video-list">
         {videos.map(video => (
           <div key={video.id} className="video-item">
             <h3>{video.title}</h3>
-            <img src={video.thumbnail} alt={video.title} />
             <iframe
               title={video.title}
               width="560"

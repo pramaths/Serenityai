@@ -76,7 +76,7 @@
 .container {
   display: flex;
   justify-content: center;
-  min-height: 60vh;
+  min-height: 50vh;
   width: 100%;
   align-items: center;
 

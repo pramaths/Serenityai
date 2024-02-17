@@ -8,7 +8,60 @@ import axios from 'axios'
 
 const dashboard = () => {
   const [dassReport, setDassReport] = useState(null);
+  const [message, setMessage] = useState(null);
   const router = useRouter();
+
+  const severityMessages = {
+    Depression: {
+      "Normal": "All set! You're doing well.",
+      "Mild": "Take care of yourself and your time.",
+      "Moderate": "Seek support from loved ones or a professional.",
+      "Severe": "It's important to prioritize your mental health and seek professional help.",
+      "Extremely Severe": "Immediate professional help is recommended. You're not alone in this."
+    },
+    Anxiety: {
+      "Normal": "You're managing well. Keep it up!",
+      "Mild": "Practice relaxation techniques to manage stress.",
+      "Moderate": "Consider seeking support from a therapist or counselor.",
+      "Severe": "It's important to address your anxiety. Seek professional help if needed.",
+      "Extremely Severe": "Immediate professional help is recommended. You're not alone in this."
+    },
+    Stress: {
+      "Normal": "You're handling stress effectively. Keep it up!",
+      "Mild": "Practice stress-reduction techniques such as deep breathing or meditation.",
+      "Moderate": "Consider seeking support from a therapist or counselor to manage stress.",
+      "Severe": "It's important to address your stress levels. Seek professional help if needed.",
+      "Extremely Severe": "Immediate professional help is recommended. You're not alone in this."
+    }
+  };
+
+  function getMessages(depressionSeverity, anxietySeverity, stressSeverity) {
+    const messages = {};
+
+    // Mapping over each category
+    for (const [category, severities] of Object.entries(severityMessages)) {
+      // Determining the appropriate message based on severity
+      let severity;
+      switch (category) {
+        case 'Depression':
+          severity = depressionSeverity;
+          break;
+        case 'Anxiety':
+          severity = anxietySeverity;
+          break;
+        case 'Stress':
+          severity = stressSeverity;
+          break;
+        default:
+          severity = 'Normal';
+      }
+
+      // Storing the message for the category
+      messages[category] = severityMessages[category][severity];
+    }
+
+    setMessage(messages);
+  }
 
 
   useEffect(() => {
@@ -20,6 +73,8 @@ const dashboard = () => {
           const response = await axios.get(`https://serenityaii.onrender.com/dassReport/${userId}`);
           setDassReport(response.data);
           console.log(response.data);
+          getMessages(response.data.depressionSeverity, response.data.anxietySeverity, response.data.stressSeverity);
+
         } catch (error) {
           console.log('Error fetching data:', error);
         }
@@ -47,18 +102,6 @@ const dashboard = () => {
           Here's your <code>DASS21 report</code>
         </p>
 
-        {/* <div className={styles.grid}>
-      
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-        </div> */}
-
         {
           dassReport && (
             <>
@@ -67,7 +110,9 @@ const dashboard = () => {
                 <div className={styles.compartment}>
                   <GaugeChart value={dassReport.depressionScore} />
                   <h2>Depression Score</h2>
-                  <h3>Severity : {dassReport.depressionSeverity}</h3>
+                  <h3 className={`${styles.severity}-${dassReport.depressionSeverity.toLowerCase()}`}>
+                    Severity : {dassReport.depressionSeverity}
+                  </h3>
                 </div>
                 <div className={styles.compartment}>
                   <GaugeChart value={dassReport.anxietyScore} />
@@ -78,6 +123,18 @@ const dashboard = () => {
                   <GaugeChart value={dassReport.stressScore} />
                   <h2>Stress Score</h2>
                   <h3>Severity : {dassReport.stressSeverity}</h3>
+                </div>
+
+              </div>
+              <div className={styles.below}>
+                <h2 className={styles.belowh}>
+                  What could be done?
+                </h2>
+                <div className={styles.summary}>
+                  {console.log("Message state:", message)}
+                  {message && Object.entries(message).map(([category, messageText]) => (
+                    <p key={category}>{category}: {messageText}</p>
+                  ))}
                 </div>
 
               </div>

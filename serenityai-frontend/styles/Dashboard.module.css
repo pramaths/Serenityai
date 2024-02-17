@@ -7,12 +7,42 @@
   align-items: center;
 }
 
+/* Add new severity classes */
+.severity-normal {
+  color: orange; /* Light shade of orange */
+}
+
+.severity-mild {
+  color: #FFA500; /* Medium shade of orange */
+}
+
+.severity-moderate {
+  color: #FF4500; /* Dark shade of orange */
+}
+
+.severity-severe {
+  color: red; /* Red */
+}
+
+.severity-extremely-severe {
+  color: darkred; /* Dark red */
+}
+
 .gradient{
   background: rgb(238,174,202);
   background: linear-gradient(280deg, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-size: 4rem;
+}
+
+.below{
+  
+}
+
+.summary{
+  font-weight: 400;
+  font-size: 1.2rem;
 }
 
 
