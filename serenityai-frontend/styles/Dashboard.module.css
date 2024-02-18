@@ -7,26 +7,7 @@
   align-items: center;
 }
 
-/* Add new severity classes */
-.severity-normal {
-  color: orange; /* Light shade of orange */
-}
 
-.severity-mild {
-  color: #FFA500; /* Medium shade of orange */
-}
-
-.severity-moderate {
-  color: #FF4500; /* Dark shade of orange */
-}
-
-.severity-severe {
-  color: red; /* Red */
-}
-
-.severity-extremely-severe {
-  color: darkred; /* Dark red */
-}
 
 .gradient{
   background: rgb(238,174,202);
@@ -36,9 +17,6 @@
   font-size: 4rem;
 }
 
-.below{
-  
-}
 
 .summary{
   font-weight: 400;
@@ -119,6 +97,10 @@
 
 .logo {
   height: 1em;
+}
+
+.belowh{
+  color:grey
 }
 
 @media (max-width: 600px) {

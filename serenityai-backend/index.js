@@ -156,7 +156,7 @@ app.post('/api/data', (req, res) => {
     };
 
     // Send frontend link with userId as query parameter
-    const frontendLink = `https://serenityai-42c1-fdgawl6mh-pramaths.vercel.app/dashboard/${userId}`;
+    const frontendLink = `http://localhost:3000/dashboard/${userId}`;
     res.json({ link: frontendLink });
 
 });

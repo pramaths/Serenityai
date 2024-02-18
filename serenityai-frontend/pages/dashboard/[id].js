@@ -138,8 +138,9 @@ const dashboard = () => {
                 </div>
 
               </div>
+              <hr/>
               <div className={styles.video}>
-                <VideoRecommendations />
+                <VideoRecommendations dashboard={dassReport}/>
               </div>
 
             </>

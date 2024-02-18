@@ -1,43 +1,57 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const VideoRecommendations = () => {
+const VideoRecommendations = ({ dashboard: dassReport }) => {
   const [videos, setVideos] = useState([]);
 
   useEffect(() => {
     const fetchRecommendedVideos = async () => {
+      const topics = [];
+      if (dassReport.depressionSeverity === 'Severe' || dassReport.depressionSeverity === 'Extremely Severe') {
+        topics.push('overcoming depression');
+      }
+      if (dassReport.anxietySeverity === 'Severe' || dassReport.anxietySeverity === 'Extremely Severe') {
+        topics.push('managing anxiety');
+      }
+      if (dassReport.stressSeverity === 'Severe' || dassReport.stressSeverity === 'Extremely Severe') {
+        topics.push('stress relief');
+      }
+      const searchQueries = topics.length > 0 ? topics : ['mental wellness']; 
       try {
-        // Make an API request to YouTube Data API
-        const response = await axios.get('https://www.googleapis.com/youtube/v3/search', {
-          params: {
-            part: 'snippet',
-            q: 'How to overcome Depression ?', // Adjust the search query based on your criteria or genre
-            type: 'video',
-            maxResults: 2, // Maximum number of videos to fetch
-            key: 'AIzaSyAh_G1A2bht-XtQA34oyVBjiUGAo13ZuCA', // Your YouTube Data API key
-          },
-        });
+        const videoData = [];
 
-        // Extract video data from the response
-        const videoData = response.data.items.map(item => ({
-          id: item.id.videoId,
-          title: item.snippet.title,
-          thumbnail: item.snippet.thumbnails.default.url,
-        }));
+        for (const query of searchQueries) {
+          const response = await axios.get('https://www.googleapis.com/youtube/v3/search', {
+            params: {
+              part: 'snippet',
+              q: query,
+              type: 'video',
+              maxResults: 2, // Adjust as needed
+              key: 'AIzaSyAh_G1A2bht-XtQA34oyVBjiUGAo13ZuCA', // Ensure to replace this with your actual API key
+            },
+          });
 
-        // Set the fetched videos in state
+          videoData.push(...response.data.items.map(item => ({
+            id: item.id.videoId,
+            title: item.snippet.title,
+            thumbnail: item.snippet.thumbnails.default.url,
+          })));
+        }
+
         setVideos(videoData);
       } catch (error) {
         console.error('Error fetching recommended videos:', error);
       }
     };
 
-    fetchRecommendedVideos();
-  }, []);
+    if (dassReport) {
+      fetchRecommendedVideos();
+    }
+  }, [dassReport]);
 
   return (
     <div>
-      <h2>May be these would help</h2>
+      <h2 style={{color:"grey"}}>May be these would help</h2>
       <div className="video-list">
         {videos.map(video => (
           <div key={video.id} className="video-item">
